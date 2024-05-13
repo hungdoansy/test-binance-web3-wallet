@@ -23,6 +23,7 @@
     },
     "scripts": {
         "dev": "next dev -p 3029",
+        "start": "nex start",
         "build": "next build",
         "typecheck": "pnpm tsc --noEmit",
         "format": "prettier './**/*.{js,jsx,ts,tsx,css,md,json,yml,yaml,html}' --config ./.prettierrc.js --write"
