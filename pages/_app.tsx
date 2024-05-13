@@ -12,6 +12,7 @@ import {
   getDefaultWallets,
   lightTheme,
   midnightTheme,
+  getWalletConnectConnector,
 } from '@rainbow-me/rainbowkit';
 import {
   GetSiweMessageOptions,
@@ -100,6 +101,8 @@ import {
 } from 'wagmi/chains';
 
 import { AppContextProps } from '../lib/AppContextProps';
+import { binanceWeb3Wallet } from './_components/binanceWeb3Wallet';
+import { okx1Wallet } from './_components/okx1Wallet';
 
 const RAINBOW_TERMS = 'https://rainbow.me/terms-of-use';
 
@@ -144,6 +147,55 @@ const sei = {
   contracts: {},
 } as const satisfies Chain;
 
+const otherWallets = [
+  argentWallet,
+  okxWallet,
+  // bifrostWallet,
+  // bitgetWallet,
+  // bitskiWallet,
+  // bitverseWallet,
+  // bloomWallet,
+  // bybitWallet,
+  // clvWallet,
+  // compassWallet,
+  // coin98Wallet,
+  // coreWallet,
+  // dawnWallet,
+  // desigWallet,
+  // enkryptWallet,
+  // foxWallet,
+  // frameWallet,
+  // frontierWallet,
+  // gateWallet,
+  // imTokenWallet,
+  // kresusWallet,
+  // krakenWallet,
+  // kaikasWallet,
+  // ledgerWallet,
+  // mewWallet,
+  // oktoWallet,
+  // okxWallet,
+  // omniWallet,
+  // oneInchWallet,
+  // oneKeyWallet,
+  // phantomWallet,
+  // rabbyWallet,
+  // ramperWallet,
+  // roninWallet,
+  // safeheronWallet,
+  // safepalWallet,
+  // subWallet,
+  // tahoWallet,
+  // talismanWallet,
+  // tokenPocketWallet,
+  // tokenaryWallet,
+  // trustWallet,
+  // uniswapWallet,
+  // xdefiWallet,
+  // zealWallet,
+  // zerionWallet,
+]
+
 const config = getDefaultConfig({
   appName: 'RainbowKit Demo',
   projectId,
@@ -183,56 +235,20 @@ const config = getDefaultConfig({
     {
       groupName: 'Other',
       wallets: [
-        argentWallet,
-        bifrostWallet,
-        bitgetWallet,
-        bitskiWallet,
-        bitverseWallet,
-        bloomWallet,
-        bybitWallet,
-        clvWallet,
-        compassWallet,
-        coin98Wallet,
-        coreWallet,
-        dawnWallet,
-        desigWallet,
-        enkryptWallet,
-        foxWallet,
-        frameWallet,
-        frontierWallet,
-        gateWallet,
-        imTokenWallet,
-        kresusWallet,
-        krakenWallet,
-        kaikasWallet,
-        ledgerWallet,
-        mewWallet,
-        oktoWallet,
-        okxWallet,
-        omniWallet,
-        oneInchWallet,
-        oneKeyWallet,
-        phantomWallet,
-        rabbyWallet,
-        ramperWallet,
-        roninWallet,
-        safeheronWallet,
-        safepalWallet,
-        subWallet,
-        tahoWallet,
-        talismanWallet,
-        tokenPocketWallet,
-        tokenaryWallet,
-        trustWallet,
-        uniswapWallet,
-        xdefiWallet,
-        zealWallet,
-        zerionWallet,
+        ...otherWallets,
+        okx1Wallet,
+        binanceWeb3Wallet,
       ],
     },
   ],
   ssr: true,
 });
+
+
+console.log({
+  binanceWeb3Wallet,
+  config
+})
 
 const demoAppInfo = {
   appName: 'Rainbowkit Demo',
