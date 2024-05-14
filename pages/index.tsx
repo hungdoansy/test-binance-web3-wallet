@@ -15,6 +15,7 @@ import { Address, parseEther } from "viem"
 import { useAccount, useSendTransaction, useSignMessage, useSignTypedData } from "wagmi"
 import { AppContextProps } from "../lib/AppContextProps"
 import { getAuthOptions } from "./api/auth/[...nextauth]"
+import { walletConnect } from "wagmi/connectors"
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return {
@@ -35,6 +36,7 @@ const Example = ({ authEnabled }: AppContextProps) => {
     const { openConnectModal, connectModalOpen } = useConnectModal()
     const { address, isConnected: isWagmiConnected } = useAccount()
     const { status } = useSession()
+    const [walletName, setWalletName] = useState("")
 
     const defaultProps = ConnectButton.__defaultProps
 
@@ -67,11 +69,43 @@ const Example = ({ authEnabled }: AppContextProps) => {
     const connected = isWagmiConnected && (!authEnabled || status === "authenticated")
 
     const handleClickGetProvider = async () => {
-        const provider = await account?.connector?.getProvider()
+        const connector = account.connector
+        if (!connector) {
+            console.log({
+                provider: undefined,
+            })
+            return
+        }
+
+        const provider = await connector.getProvider()
         console.log({
             provider,
+            connector,
         })
     }
+
+    useEffect(() => {
+        ;(async () => {
+            const connector = account.connector
+            if (!connector) {
+                setWalletName("")
+                return
+            }
+
+            let name = ""
+            if (connector.id === "walletConnect") {
+                name = "WalletConnect"
+                const provider = await connector.getProvider()
+                if ((provider as any)?.session?.peer?.metadata?.name) {
+                    name = (provider as any).session.peer.metadata.name
+                }
+            } else {
+                name = connector.name
+            }
+
+            setWalletName(name)
+        })()
+    }, [account.connector])
 
     return (
         <div
@@ -323,8 +357,21 @@ const Example = ({ authEnabled }: AppContextProps) => {
 
                     <div style={{ fontFamily: "sans-serif" }}>
                         <h3>Connected account</h3>
-                        <button onClick={handleClickGetProvider}>Get provider</button>
-                        <div style={{ display: "flex", gap: 12, paddingBottom: 12 }}>{JSON.stringify(account)}</div>
+                        <div style={{ display: "flex", gap: 12, paddingBottom: 12 }}>
+                            {account.connector ? JSON.stringify(account.connector) : "not connected"}
+                        </div>
+                        <h4>Wallet</h4>
+                        <div style={{ display: "flex", gap: 12, paddingBottom: 12 }}>{walletName}</div>
+
+                        <button
+                            style={{
+                                marginTop: 32,
+                            }}
+                            onClick={handleClickGetProvider}
+                        >
+                            Get provider (check console.log)
+                        </button>
+
                         <div>
                             {transactionData && <div>Transaction: {JSON.stringify(transactionData)}</div>}
                             {transactionError && <div>Error sending transaction</div>}
@@ -337,7 +384,7 @@ const Example = ({ authEnabled }: AppContextProps) => {
                         </div>
                     </div>
 
-                    <div style={{ fontFamily: "sans-serif" }}>
+                    <div style={{ fontFamily: "sans-serif", display: "none" }}>
                         <h3>ConnectButton props</h3>
                         <table cellSpacing={12}>
                             <thead>

@@ -358,7 +358,7 @@ function RainbowKitApp({
                 >
                     <Component {...pageProps} {...appContextProps} />
 
-                    {isMounted && (
+                    {false && isMounted && (
                         <>
                             <div
                                 style={{

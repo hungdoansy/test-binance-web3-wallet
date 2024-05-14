@@ -8,6 +8,9 @@ dependencies:
   '@binance/w3w-rainbow-connector':
     specifier: ^1.1.4
     version: 1.1.4(@rainbow-me/rainbowkit@2.0.7)(viem@2.10.5)(wagmi@2.8.7)
+  '@binance/w3w-utils':
+    specifier: ^1.1.4
+    version: 1.1.4
   '@binance/w3w-wagmi-connector-v2':
     specifier: ^1.2.3
     version: 1.2.3(viem@2.10.5)(wagmi@2.8.7)
